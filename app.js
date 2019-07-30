@@ -10,6 +10,7 @@ const cors = require('cors');
 app.use(cors())
 require('dotenv/config');
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended:true}));
 app.set('view engine', 'ejs');
 app.use('/seatmap', seatmapRouter);
 app.use('/book', bookRouter);
@@ -21,8 +22,17 @@ mongoose.connect(DBurl, {useNewUrlParser: true}, ()=>{
 
 
 ///routes
-app.get('/', (req, res)=>{
-    res.status(200).render('seat', {pageTitle:'BOOKON - HOME'})
+app.get('/', async (req, res)=>{
+    try{
+        seats = await bookModel.find({}, {SeatNo:1});
+        seatno = []
+        seats.forEach(element => {
+            seatno.push(element.SeatNo);
+        });
+        res.status(200).render('seat', {pageTitle:'BOOKON - HOME', seatno: seatno})
+    }catch(err){
+        res.json({message: err});
+    }
 })
 app.use((req, res, next)=>{
     res.status(404).render('404', {pageTitle: 'Page Not Found'})

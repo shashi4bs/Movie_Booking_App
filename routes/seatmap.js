@@ -8,12 +8,14 @@ SeatmapRouter.get('/:id', async (req, res)=>{
         if(seat.length>0){
             res.json(seat);
         }
-        else
-            res.json({message: "SEAT AVAILABLE"});
+        else{
+            res.json({message: "Seat Available"});            
+        }
     }catch(err){
         {message: err}
     }
 });
+
 
 
 

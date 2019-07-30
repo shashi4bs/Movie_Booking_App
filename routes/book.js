@@ -1,23 +1,47 @@
 const express = require('express');
 const router = express.Router();
 const book = require('../models/Book');
+const {check, validationResult} = require('express-validator');
 
-router.post('/', async (req, res)=>{
+router.get('/:id', (req, res)=>{
+    res.status(200).render('makeBooking', {SeatNo:req.params.id, pageTitle:'Make Booking', date:Date.now});
+})
+
+router.post('/', [
+    check('Name').isLength({min:4}),
+    check('Age').isNumeric()
+    ],
+    async (req, res)=>{
     try{
+        val =  validationResult(req);
+        if(!val.isEmpty()){
+            console.log('validation error')
+            return res.status(422).json({error:val.array()});
+        }
+        console.log(req.body)
+        newPost = new book({
+            Name : req.body.Name,
+            Age: req.body.Age,
+            SeatNo: req.body.SeatNo,
+            Date: req.body.Date,
+            ShowTime: req.body.ShowTime,
+        });
         seat = await book.find({SeatNo: req.body.SeatNo});
         if(seat.length){
             res.json({message: "already Booked"});
         }else{
+            date = new Date(req.body.Date);
+            time = req.body.ShowTime.toString().split(':');
+            date.setUTCHours(Number.parseInt(time[0]), Number.parseInt(time[1]));
             seat = new book({
                 Name: req.body.Name,
-                Age: req.body.name,
+                Age: req.body.Age,
                 SeatNo: req.body.SeatNo,
-                Date: req.body.Date,
-                ShowTime: req.body.ShowTime
+                Date: date,
             });
             try{
                 seat = await seat.save();
-                res.json(seat);
+                res.redirect('back');
             }catch(err){
                 res.json({message: err});
             }

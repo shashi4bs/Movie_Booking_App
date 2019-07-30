@@ -20,10 +20,6 @@ bookingSchema = mongoose.Schema({
     Date:{
         type: Date, 
         required: true
-    },
-    ShowTime:{
-        type: Number,
-        required:true
     }
 });
 
