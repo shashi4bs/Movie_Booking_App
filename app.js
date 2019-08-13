@@ -14,6 +14,7 @@ app.use(bodyParser.urlencoded({extended:true}));
 app.set('view engine', 'ejs');
 app.use('/seatmap', seatmapRouter);
 app.use('/book', bookRouter);
+app.use(express.static(__dirname+'/static'));
 DBurl = process.env.DATABASE_URI;
 
 mongoose.connect(DBurl, {useNewUrlParser: true}, ()=>{
@@ -24,16 +25,13 @@ mongoose.connect(DBurl, {useNewUrlParser: true}, ()=>{
 ///routes
 app.get('/', async (req, res)=>{
     try{
-        seats = await bookModel.find({}, {SeatNo:1});
-        seatno = []
-        seats.forEach(element => {
-            seatno.push(element.SeatNo);
-        });
-        res.status(200).render('seat', {pageTitle:'BOOKON - HOME', seatno: seatno})
+        res.status(200).render('index');
     }catch(err){
         res.json({message: err});
     }
 })
+
+
 app.use((req, res, next)=>{
     res.status(404).render('404', {pageTitle: 'Page Not Found'})
 });

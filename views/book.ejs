@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Book - Movie Ticket</title>
+    <link rel="stylesheet" href="css/bookStyle.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+<section id="header">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand brand" href="#">BookON</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="fa fa-bars"></i>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="/">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Features</a>
+            </li>
+          </ul>
+        </div>
+    </nav>
+</section>    
+<section id="seatmap">
+    <div class="container cover">
+        <h2>SeatMap</h2>
+        <div style="margin-top:100px">
+            <%for(var j=1;j<=50;) { %>
+            <div class="container row">
+                <%for(var i=j;i<j+10;i++){
+                    if(seatno.includes(i)){
+                    %>
+                    <div class="col-md-1 col-md-offset-2">
+                        <button type="button" class="btn-outline-primary btn-lg disabled" style="size: 50px" id=<%=i%> onclick=show(<%=i%>)>S<%=i%></button>
+                    </div>
+                    <% }else{%>
+                        <div class="col-md-1 col-md-offset-2">
+                            <button type="button" class="btn-outline-primary btn-lg active" onclick="openForm(<%=i%>)" style="size: 50px" id=<%=i%>>S<%=i%></button>
+                        </div>
+                <%      }
+                    } %>
+                <br/>
+            </div>
+            <% 
+                j = i;
+                } %>
+            <div class="form-popup" id= "seatForm" style="display: none; align:middle"> 
+            <form action='/book' method='post'>
+                <h1>Book Seat</h1>
+                <label>Name</label>
+                <input type="text" name="Name" value=""><br/>
+                <label>Age</label>
+                <input type="number" name="Age" value=""><br/>
+                <label>SeatNo</label>
+                <input type="number" name="SeatNo"id="SeatNo" readonly><br/>
+                <label>Date</label>
+                <input type="date" name="Date" id="date"><br/>
+                <label>Time</label>
+                <input type="time" name="ShowTime" id="time"><br/>
+                <button class="btn" type="submit" name="submit" onclick="closeForm()">Confirm Booking</button>
+            </form>
+             </div>
+        </div>
+        <script>
+            function openForm(i) {
+                formElement = document.getElementById("seatForm").style.display="block";
+                seatNo = document.getElementById("SeatNo");
+                seatNo.value=i;
+                //seatNo.readonly=true;
+                console.log(Date.now);
+                formElement.style.opacity="0.8"
+                document.getElementById('date').value = Date.now.toISOString()
+            }
+
+            function closeForm() {
+                document.getElementById("seatForm").style.display = "none";
+            }
+        </script>
+    </div>
+</section>
+</body>
+</html>

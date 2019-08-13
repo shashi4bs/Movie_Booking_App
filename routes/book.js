@@ -6,7 +6,18 @@ const {check, validationResult} = require('express-validator');
 router.get('/:id', (req, res)=>{
     res.status(200).render('makeBooking', {SeatNo:req.params.id, pageTitle:'Make Booking', date:Date.now});
 })
-
+router.get('/', async (req, res)=>{
+    try{
+        seats = await book.find({}, {SeatNo:1});
+        seatno = []
+        seats.forEach(element => {
+            seatno.push(element.SeatNo);
+        });
+        res.status(200).render('book', {pageTitle:'BOOKON - HOME', seatno: seatno})
+    }catch(err){
+        res.json({message: err});
+    }
+});
 router.post('/', [
     check('Name').isLength({min:4}),
     check('Age').isNumeric()

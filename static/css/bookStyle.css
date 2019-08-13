@@ -1,0 +1,39 @@
+*
+{
+    margin: 0px;
+    padding: 0px;
+}
+.body{
+    font-family: sans-serif;
+}
+#header a{
+    color: #ffffff;
+    font-weight: 600;
+}
+.navbar{
+    background-image: linear-gradient(to right, #a517ba, #5f1782);
+}
+.brand{
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-weight: 600;
+}
+
+#header button {
+    size: auto;
+    color: #ffffff;
+    border-color: #ffffff;
+}
+
+#seatmap{
+    background-image: linear-gradient(to right, #a517ba, #5f1782);
+}
+.cover{
+    align-content: center;
+    padding-top: 50px;
+    padding-bottom: 50px;
+}
+#seatmap h3{
+    color: #ffffff;
+    font-weight: 500;
+    font-size: 50px;
+}
